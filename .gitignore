@@ -1,3 +1,10 @@
+# local data and models
+Analysis/
+Data/
+Model/
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
