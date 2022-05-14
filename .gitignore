@@ -3,6 +3,9 @@ Analysis/
 Data/
 Model/
 
+# data
+*.sqlite
+
 
 
 # Byte-compiled / optimized / DLL files
