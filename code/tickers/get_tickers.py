@@ -28,11 +28,10 @@ def get_ticker(ticker_symbol, api_key, output_size="full"):
 
 
 def convert_to_frame(json_ticker, cols=["4. close"]):
-    metadata = json_ticker["Meta Data"]
     time_frame = pd.DataFrame.from_dict(
         json_ticker["Time Series (Daily)"]
     ).transpose()[cols]
     for c in cols:
         time_frame[c] = time_frame[c].astype(float)
-    return metadata, time_frame
+    return time_frame
 

@@ -2,7 +2,7 @@ import random
 
 
 import dash
-import dash_html_components as html
+from dash import html
 from dash.dependencies import Input, Output
 import plotly.express as px
 import pandas as pd
@@ -105,22 +105,24 @@ def calc_sentiment_frame(selected_company):
     return plot_df, filtered_df.iloc[0]["symbol"]
 
 
-def add_ticker_frame(plot_df, ticker_symbol):
+def add_ticker_frame(plot_df, ticker_symbol, add_ticker=False):
 
     first = plot_df.index.min()
     last = plot_df.index.max()
 
-    ticker = get_ticker(
-        ticker_symbol,
-        random.choice(list(api_keys["tickers"].values()))
-    )
+    if add_ticker:
+        ticker = get_ticker(
+            ticker_symbol,
+            random.choice(list(api_keys["tickers"].values()))
+        )
 
-    metadata, ticker_frame = convert_to_frame(ticker)
-    plot_df = plot_df.merge(
-        ticker_frame, left_index=True, right_index=True, how="outer")
+        ticker_frame = convert_to_frame(ticker)
+        plot_df = plot_df.merge(
+            ticker_frame, left_index=True, right_index=True, how="outer")
+        plot_df["4. close"] = plot_df["4. close"] / plot_df["4. close"].iloc[0]
 
     plot_df = plot_df[(plot_df.index <= last) & (plot_df.index >= first)]
-    plot_df["4. close"] = plot_df["4. close"] / plot_df["4. close"].iloc[0]
+    
     plot_df.index = plot_df.index.rename("date")
     return pd.melt(plot_df.reset_index(), id_vars="date")
 
